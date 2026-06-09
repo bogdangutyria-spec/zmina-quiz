@@ -1,0 +1,1867 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квіз — Салон краси «Зміна»</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet">
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1268903707943600');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1268903707943600&ev=PageView&noscript=1"/></noscript>
+<!-- End Meta Pixel -->
+
+<style>
+
+/* ═══════════════════════════════════
+   DESIGN TOKENS
+═══════════════════════════════════ */
+:root {
+  --bg:           #faf9f7;
+  --surface:      #f3f1ed;
+  --surface2:     #ede9e3;
+  --border:       #e2ded7;
+  --border-focus: #a8c49a;
+  --text:         #1a1714;
+  --text-2:       #6b6560;
+  --text-3:       #9c9690;
+  --accent:       #b8d4a9;
+  --accent-dk:    #6fa05e;
+  --accent-glow:  rgba(184,212,169,0.25);
+  --selected-bg:  #1a1714;
+  --selected-text:#faf9f7;
+  --btn-bg:       #1a1714;
+  --btn-text:     #faf9f7;
+  --r-sm:         10px;
+  --r-md:         16px;
+  --r-lg:         24px;
+  --r-pill:       999px;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --shadow-sm:    0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md:    0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.04);
+  --shadow-hover: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+  --transition:   0.2s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* ═══════════════════════════════════
+   RESET
+═══════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--font-body);
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+  line-height:1.5;
+}
+
+/* ═══════════════════════════════════
+   LAYOUT
+═══════════════════════════════════ */
+.quiz-wrap{
+  display:grid;
+  grid-template-columns:45% 55%;
+  min-height:100vh;
+}
+
+/* LEFT PANEL */
+.quiz-left{
+  position:sticky;
+  top:0;
+  height:100vh;
+  overflow:hidden;
+  background:var(--text);
+}
+.quiz-left-inner{
+  position:relative;
+  width:100%;
+  height:100%;
+}
+/* Atmospheric gradient — показується коли немає фото */
+.quiz-left-gradient{
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 30% 20%, rgba(184,212,169,0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 80% 80%, rgba(184,212,169,0.10) 0%, transparent 60%),
+    linear-gradient(160deg, #1e1c18 0%, #141210 50%, #1a1814 100%);
+}
+.quiz-hero-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  opacity:0.82;
+  transition:opacity 0.6s;
+}
+.quiz-hero-veil{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(20,18,14,0.25) 0%,
+    rgba(20,18,14,0.0) 40%,
+    rgba(20,18,14,0.55) 80%,
+    rgba(20,18,14,0.75) 100%
+  );
+}
+.quiz-left-label{
+  position:absolute;
+  top:24px;left:28px;
+  font-family:var(--font-body);
+  font-size:10px;font-weight:500;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.5);
+}
+.quiz-left-tagline{
+  position:absolute;
+  bottom:48px;left:28px;right:28px;
+  font-family:var(--font-display);
+  font-size:clamp(26px,2.8vw,40px);
+  font-weight:600;
+  line-height:1.12;
+  color:#fff;
+  letter-spacing:-0.01em;
+}
+.quiz-left-tagline em{
+  font-style:italic;
+  color:rgba(255,255,255,0.7);
+}
+.quiz-left-caption{
+  position:absolute;
+  bottom:20px;left:28px;right:28px;
+  font-size:10px;
+  color:rgba(255,255,255,0.35);
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+}
+/* Декоративна лінія зверху */
+.quiz-left-topline{
+  position:absolute;
+  top:0;left:0;right:0;
+  height:3px;
+  background:linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+  opacity:0.6;
+}
+
+/* RIGHT PANEL */
+.quiz-right{
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+  overflow-y:auto;
+  background:var(--bg);
+}
+
+/* ═══════════════════════════════════
+   HEADER
+═══════════════════════════════════ */
+.quiz-header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 44px;
+  position:sticky;top:0;
+  background:rgba(250,249,247,0.92);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  z-index:20;
+}
+.quiz-logo{
+  font-family:var(--font-display);
+  font-size:20px;font-weight:600;
+  font-style:italic;
+  letter-spacing:0.01em;
+  color:var(--text);
+  text-decoration:none;
+  line-height:1;
+}
+.quiz-back{
+  display:none;
+  align-items:center;gap:6px;
+  background:none;border:none;
+  cursor:pointer;
+  color:var(--text-2);
+  font-size:13px;font-weight:500;
+  font-family:var(--font-body);
+  padding:6px 10px;
+  border-radius:var(--r-sm);
+  transition:color var(--transition),background var(--transition);
+}
+.quiz-back:hover{color:var(--text);background:var(--surface);}
+.quiz-back.visible{display:flex;}
+.quiz-back-arrow{font-size:16px;line-height:1;}
+
+/* ═══════════════════════════════════
+   PROGRESS
+═══════════════════════════════════ */
+.quiz-progress{
+  display:none;
+  flex-direction:column;
+  gap:7px;
+  padding:18px 44px 0;
+}
+.quiz-progress.show{display:flex;}
+.qp-bar{
+  height:8px;
+  background:var(--surface2);
+  border-radius:var(--r-pill);
+  overflow:hidden;
+}
+.qp-fill{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--accent-dk),var(--accent));
+  border-radius:var(--r-pill);
+  transition:width 0.5s cubic-bezier(0.4,0,0.2,1);
+}
+.qp-meta{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  font-size:11px;font-weight:600;
+  letter-spacing:0.04em;
+  color:var(--text-3);
+}
+.qp-pct{color:var(--accent-dk);}
+
+/* ═══════════════════════════════════
+   SCREEN CONTAINER + TRANSITIONS
+═══════════════════════════════════ */
+.screens-wrap{
+  flex:1;
+  position:relative;
+  overflow:hidden;
+}
+.screen{
+  display:none;
+  flex-direction:column;
+  padding:32px 44px 52px;
+  min-height:calc(100vh - 65px);
+  animation:slideIn 0.28s cubic-bezier(0.4,0,0.2,1) both;
+}
+.screen.active{display:flex;}
+.screen.slide-out{
+  animation:slideOut 0.22s cubic-bezier(0.4,0,0.2,1) both;
+}
+
+@keyframes slideIn{
+  from{opacity:0;transform:translateX(22px);}
+  to  {opacity:1;transform:translateX(0);}
+}
+@keyframes slideOut{
+  from{opacity:1;transform:translateX(0);}
+  to  {opacity:0;transform:translateX(-18px);}
+}
+
+/* ═══════════════════════════════════
+   WELCOME SCREEN
+═══════════════════════════════════ */
+.w-eyebrow{
+  font-size:10px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--text-2);
+  font-weight:500;
+  margin-bottom:14px;
+}
+.w-headline{
+  font-family:var(--font-display);
+  font-size:clamp(36px,4vw,52px);
+  font-weight:600;
+  line-height:1.08;
+  letter-spacing:-0.015em;
+  margin-bottom:14px;
+  color:var(--text);
+}
+.w-subhead{
+  font-size:14px;
+  color:var(--text-2);
+  line-height:1.65;
+  margin-bottom:28px;
+  max-width:440px;
+}
+.w-bullets{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  margin-bottom:24px;
+}
+.w-bullet{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 18px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  font-size:13px;
+  font-weight:400;
+  color:var(--text-2);
+  transition:border-color var(--transition);
+}
+.w-bullet:hover{border-color:var(--border-focus);}
+.w-bullet-dot{
+  width:7px;height:7px;
+  border-radius:50%;
+  background:var(--accent-dk);
+  flex-shrink:0;
+}
+.w-discount{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 20px;
+  background:var(--accent);
+  border-radius:var(--r-md);
+  margin-bottom:20px;
+}
+.w-discount-amount{
+  font-family:var(--font-display);
+  font-size:22px;
+  font-weight:700;
+  color:var(--text);
+  line-height:1;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.w-discount-label{
+  font-size:13px;
+  color:var(--text);
+  opacity:0.75;
+}
+.btn-start{
+  display:flex;
+  align-items:center;justify-content:center;gap:10px;
+  width:100%;
+  padding:18px 28px;
+  background:var(--btn-bg);
+  color:var(--btn-text);
+  border:none;
+  border-radius:var(--r-pill);
+  font-family:var(--font-body);
+  font-size:15px;font-weight:600;
+  cursor:pointer;
+  letter-spacing:0.01em;
+  transition:opacity var(--transition),transform var(--transition),box-shadow var(--transition);
+  box-shadow:var(--shadow-md);
+}
+.btn-start:hover{
+  opacity:0.88;
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover);
+}
+.btn-start:active{transform:translateY(0);box-shadow:var(--shadow-sm);}
+.btn-start-arrow{
+  font-size:18px;
+  transition:transform 0.2s;
+}
+.btn-start:hover .btn-start-arrow{transform:translateX(3px);}
+
+.w-hint{
+  text-align:center;
+  font-size:11px;
+  color:var(--text-3);
+  margin-top:10px;
+  letter-spacing:0.02em;
+}
+
+/* Reviews ticker */
+.w-reviews{margin-top:28px;}
+.w-reviews-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:9px;
+  letter-spacing:0.16em;
+  text-transform:uppercase;
+  color:var(--text-3);
+  font-weight:600;
+  margin-bottom:10px;
+}
+.w-reviews-pulse{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent-dk);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+.ticker-outer{overflow:hidden;mask:linear-gradient(90deg,transparent,black 8%,black 92%,transparent);}
+.ticker-track{
+  display:inline-flex;gap:10px;
+  animation:ticker 24s linear infinite;
+  white-space:nowrap;
+}
+.ticker-track:hover{animation-play-state:paused;}
+@keyframes ticker{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.review-chip{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-pill);
+  font-size:12px;
+  white-space:nowrap;
+  flex-shrink:0;
+}
+.review-chip-name{font-weight:600;color:var(--text);}
+.review-chip-action{color:var(--text-2);}
+
+/* Welcome — соціальний доказ (картки відгуків + лічильник) */
+.w-counter{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:12px;font-weight:600;color:var(--text-2);
+  margin-bottom:18px;
+}
+.w-counter b{color:var(--text);font-weight:700;}
+.w-counter-pulse{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--accent-dk);
+  animation:pulse 1.8s ease-in-out infinite;
+}
+.w-review-cards{display:flex;flex-direction:column;gap:9px;}
+.w-review-card{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 16px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+}
+.w-review-av{
+  width:38px;height:38px;border-radius:50%;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:16px;font-weight:600;color:var(--text);
+  flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(184,212,169,0.25);
+}
+.w-review-name{font-size:13px;font-weight:600;color:var(--text);line-height:1.3;}
+.w-review-result{font-size:12px;color:var(--text-2);line-height:1.4;}
+
+/* ═══════════════════════════════════
+   QUESTION SCREENS
+═══════════════════════════════════ */
+.q-meta{
+  font-size:11px;
+  font-weight:500;
+  letter-spacing:0.06em;
+  color:var(--text-3);
+  margin-bottom:10px;
+  text-transform:uppercase;
+}
+.q-title{
+  font-family:var(--font-display);
+  font-size:clamp(28px,3.5vw,40px);
+  font-weight:600;
+  line-height:1.12;
+  letter-spacing:-0.015em;
+  margin-bottom:6px;
+  color:var(--text);
+}
+.q-subtitle{
+  font-size:13px;
+  color:var(--text-2);
+  line-height:1.55;
+  margin-bottom:24px;
+}
+.opts{
+  display:flex;
+  flex-direction:column;
+  gap:9px;
+  flex:1;
+  margin-bottom:24px;
+}
+.opt{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  justify-content:center;
+  text-align:left;
+  padding:18px 48px 18px 22px;
+  background:var(--bg);
+  border:1.5px solid var(--border);
+  border-radius:var(--r-md);
+  cursor:pointer;
+  font-family:var(--font-body);
+  gap:8px;
+  transition:
+    border-color var(--transition),
+    background var(--transition),
+    color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+  position:relative;
+  overflow:hidden;
+}
+.opt::before{
+  content:'';
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(184,212,169,0.08) 0%,transparent 60%);
+  opacity:0;
+  transition:opacity var(--transition);
+}
+.opt:hover{
+  border-color:var(--border-focus);
+  background:var(--surface);
+  transform:translateY(-1px);
+  box-shadow:var(--shadow-sm);
+}
+.opt:hover::before{opacity:1;}
+.opt:active{transform:translateY(0);}
+.opt.selected{
+  background:var(--selected-bg);
+  border-color:var(--selected-bg);
+  color:var(--selected-text);
+  box-shadow:var(--shadow-md);
+  transform:scale(1.02);
+}
+.opt.selected::before{opacity:0;}
+.opt.selected::after{
+  content:'✓';
+  position:absolute;
+  right:18px;top:50%;
+  transform:translateY(-50%);
+  color:var(--selected-text);
+  font-size:16px;
+  font-weight:700;
+}
+.opt.selected .opt-caption{color:rgba(250,249,247,0.6);}
+.opt-label{font-size:16px;font-weight:500;line-height:1.3;}
+.opt-caption{font-size:13px;color:var(--text-2);line-height:1.35;transition:color var(--transition);}
+
+/* Питання тепер з автопереходом — кнопка «Продовжити» не потрібна */
+#btn-q1,#btn-q2,#btn-q3,#btn-q4,#btn-q5,#btn-q6,#btn-q7,#btn-q8{display:none;}
+
+/* Zone silhouette */
+.silhouette-wrap{
+  width:100px;
+  margin:0 auto 16px;
+  filter:drop-shadow(0 2px 8px rgba(0,0,0,0.06));
+}
+.silhouette-svg{width:100%;}
+.zone-hit{cursor:pointer;transition:fill 0.15s;fill:transparent;}
+.zone-hit:hover{fill:rgba(184,212,169,0.3);}
+.zone-hit.active{fill:rgba(184,212,169,0.55);}
+
+/* Continue btn */
+.btn-cont{
+  display:flex;
+  align-items:center;justify-content:center;gap:8px;
+  width:100%;
+  padding:16px 24px;
+  background:var(--btn-bg);
+  color:var(--btn-text);
+  border:none;
+  border-radius:var(--r-pill);
+  font-family:var(--font-body);
+  font-size:14px;font-weight:600;
+  cursor:pointer;
+  letter-spacing:0.01em;
+  transition:opacity var(--transition),transform var(--transition),box-shadow var(--transition);
+  box-shadow:var(--shadow-md);
+  margin-top:auto;
+}
+.btn-cont:disabled{
+  background:var(--surface2);
+  color:var(--text-3);
+  box-shadow:none;
+  cursor:not-allowed;
+}
+.btn-cont:not(:disabled):hover{
+  opacity:0.86;
+  transform:translateY(-2px);
+  box-shadow:var(--shadow-hover);
+}
+.btn-cont:not(:disabled):active{transform:translateY(0);}
+
+/* ═══════════════════════════════════
+   AMPLIFIER SCREENS
+═══════════════════════════════════ */
+.amp-eyebrow{
+  font-size:9px;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--text-3);
+  font-weight:600;
+  margin-bottom:10px;
+}
+.amp-headline{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.8vw,32px);
+  font-weight:600;
+  letter-spacing:-0.015em;
+  line-height:1.15;
+  margin-bottom:14px;
+}
+.amp-body{
+  font-size:13px;color:var(--text-2);
+  line-height:1.7;margin-bottom:22px;
+}
+
+/* Team grid */
+.team-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:20px;
+}
+.team-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  padding:16px;
+  transition:border-color var(--transition),box-shadow var(--transition);
+}
+.team-card:hover{border-color:var(--border-focus);box-shadow:var(--shadow-sm);}
+.team-av{
+  width:44px;height:44px;
+  border-radius:50%;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);
+  font-size:18px;font-weight:600;
+  color:var(--text);
+  margin-bottom:10px;
+  box-shadow:0 0 0 3px rgba(184,212,169,0.25);
+  overflow:hidden;
+  flex-shrink:0;
+}
+.team-av img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* Фото-процедура на екрані «Технології» */
+.amp-img{
+  width:100%;
+  max-height:260px;
+  object-fit:cover;
+  border-radius:var(--r-md);
+  margin-bottom:18px;
+  display:block;
+  box-shadow:var(--shadow-sm);
+}
+
+/* Мініатюра ліцензії МОЗ */
+.license-thumb{
+  display:block;
+  width:100%;max-width:280px;
+  border:1px solid var(--border);
+  border-radius:var(--r-sm);
+  margin-top:12px;
+  transition:transform var(--transition),box-shadow var(--transition);
+}
+.license-thumb:hover{transform:translateY(-1px);box-shadow:var(--shadow-md);}
+.team-name{font-size:14px;font-weight:600;margin-bottom:2px;}
+.team-spec{font-size:11px;color:var(--text-3);margin-bottom:6px;}
+.team-focus{font-size:12px;color:var(--text-2);line-height:1.4;}
+
+/* License block */
+.license-block{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-left:3px solid var(--accent-dk);
+  border-radius:var(--r-md);
+  padding:14px 16px;
+  margin-bottom:20px;
+}
+.license-title{font-size:12px;font-weight:600;margin-bottom:5px;display:flex;align-items:center;gap:7px;}
+.license-body{font-size:12px;color:var(--text-2);line-height:1.55;}
+
+/* Services grid */
+.services-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:22px;
+}
+.service-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  padding:14px;
+  transition:border-color var(--transition);
+}
+.service-card:hover{border-color:var(--border-focus);}
+.service-cat{font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-bottom:5px;}
+.service-brand{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.3;}
+.service-sub{font-size:11px;color:var(--text-2);line-height:1.45;}
+
+/* ═══════════════════════════════════
+   MINI LOADER
+═══════════════════════════════════ */
+.miniload-wrap{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  flex:1;gap:20px;
+  padding:60px 44px;
+}
+.ml-spinner{
+  width:40px;height:40px;
+  border:2.5px solid var(--border);
+  border-top-color:var(--accent-dk);
+  border-radius:50%;
+  animation:spin 0.85s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.ml-text{
+  font-family:var(--font-display);
+  font-size:18px;font-weight:400;font-style:italic;
+  color:var(--text-2);text-align:center;
+  letter-spacing:0.01em;
+}
+
+/* ═══════════════════════════════════
+   LEAD FORM
+═══════════════════════════════════ */
+.lead-eyebrow{font-size:9px;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-3);font-weight:600;margin-bottom:10px;}
+.lead-headline{
+  font-family:var(--font-display);
+  font-size:clamp(22px,2.8vw,32px);
+  font-weight:600;line-height:1.15;
+  letter-spacing:-0.015em;margin-bottom:8px;
+}
+.lead-subhead{font-size:13px;color:var(--text-2);line-height:1.6;margin-bottom:20px;}
+.lead-promise{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  padding:16px 18px;margin-bottom:20px;
+}
+.lead-promise-title{font-size:12px;font-weight:600;margin-bottom:10px;color:var(--text);}
+.lead-promise-item{
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:12px;line-height:1.55;margin-bottom:7px;color:var(--text-2);
+}
+.lead-promise-check{color:var(--accent-dk);font-weight:700;flex-shrink:0;margin-top:1px;font-size:12px;}
+.lead-form{display:flex;flex-direction:column;gap:12px;margin-bottom:14px;}
+.lead-field{display:flex;flex-direction:column;gap:5px;}
+.lead-label{font-size:11px;font-weight:600;color:var(--text-2);letter-spacing:0.04em;text-transform:uppercase;}
+.lead-input{
+  padding:13px 16px;
+  border:1.5px solid var(--border);
+  border-radius:var(--r-md);
+  font-size:14px;font-family:var(--font-body);
+  background:var(--bg);color:var(--text);
+  transition:border-color var(--transition),box-shadow var(--transition);
+  outline:none;
+}
+.lead-input:focus{border-color:var(--border-focus);box-shadow:0 0 0 3px var(--accent-glow);}
+.lead-input::placeholder{color:var(--text-3);}
+.lead-consent{
+  display:flex;align-items:flex-start;gap:9px;
+  font-size:11px;color:var(--text-3);
+  cursor:pointer;margin-bottom:16px;
+  line-height:1.5;
+}
+.lead-consent input[type=checkbox]{
+  margin-top:2px;
+  accent-color:var(--accent-dk);
+}
+.lead-secure{
+  text-align:center;
+  font-size:12px;color:var(--text-2);
+  margin-top:14px;
+  padding-top:14px;
+  border-top:1px solid var(--border);
+  letter-spacing:0.02em;
+}
+
+/* ═══════════════════════════════════
+   LOADING SCREEN
+═══════════════════════════════════ */
+.loading-wrap{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  flex:1;padding:60px 44px;gap:28px;
+}
+.loading-spinner{
+  width:48px;height:48px;
+  border:2.5px solid var(--border);
+  border-top-color:var(--accent-dk);
+  border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+.loading-steps{display:flex;flex-direction:column;gap:12px;width:100%;max-width:320px;}
+.loading-step{
+  display:flex;align-items:center;gap:12px;
+  font-size:13px;color:var(--text-2);
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.4s,transform 0.4s;
+}
+.loading-step.vis{opacity:1;transform:translateY(0);}
+.ls-icon{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;flex-shrink:0;
+  transition:background 0.3s;
+}
+.loading-step.done .ls-icon{background:var(--accent);}
+.loading-final{
+  font-family:var(--font-display);
+  font-size:18px;font-weight:600;font-style:italic;
+  color:var(--text);opacity:0;
+  transition:opacity 0.5s;text-align:center;
+}
+.loading-final.vis{opacity:1;}
+
+/* ═══════════════════════════════════
+   RESULT SCREEN
+═══════════════════════════════════ */
+.result-eyebrow{
+  font-size:9px;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--accent-dk);font-weight:600;margin-bottom:8px;
+}
+.result-headline{
+  font-family:var(--font-display);
+  font-size:clamp(26px,3.2vw,38px);
+  font-weight:600;letter-spacing:-0.015em;
+  margin-bottom:6px;line-height:1.1;
+}
+.result-subhead{font-size:13px;color:var(--text-2);line-height:1.65;margin-bottom:22px;}
+.result-card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  padding:22px;margin-bottom:16px;
+  border-top:3px solid var(--accent);
+}
+.result-card-title{
+  font-family:var(--font-display);
+  font-size:19px;font-weight:600;
+  letter-spacing:-0.01em;
+  margin-bottom:10px;line-height:1.25;
+}
+.result-body{font-size:13px;color:var(--text-2);line-height:1.7;}
+.result-body-full{display:none;margin-top:12px;}
+.result-expand{
+  background:none;border:none;
+  color:var(--accent-dk);font-size:12px;font-weight:600;
+  cursor:pointer;padding:8px 0;
+  font-family:var(--font-body);
+  transition:color var(--transition);
+}
+.result-expand:hover{color:var(--text);}
+.result-ctas{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.btn-primary{
+  display:flex;align-items:center;justify-content:center;
+  padding:16px 24px;
+  background:var(--btn-bg);color:var(--btn-text);
+  border:none;border-radius:var(--r-pill);
+  font-family:var(--font-body);font-size:14px;font-weight:600;
+  cursor:pointer;text-decoration:none;
+  transition:opacity var(--transition),transform var(--transition),box-shadow var(--transition);
+  box-shadow:var(--shadow-md);
+}
+.btn-primary:hover{opacity:0.86;transform:translateY(-2px);box-shadow:var(--shadow-hover);}
+.btn-secondary{
+  display:flex;align-items:center;justify-content:center;
+  padding:15px 24px;
+  background:var(--bg);color:var(--text);
+  border:1.5px solid var(--border);border-radius:var(--r-pill);
+  font-family:var(--font-body);font-size:14px;font-weight:500;
+  cursor:pointer;text-decoration:none;
+  transition:border-color var(--transition),background var(--transition);
+}
+.btn-secondary:hover{border-color:var(--border-focus);background:var(--surface);}
+
+/* Curator */
+.curator-card{
+  display:flex;align-items:flex-start;gap:14px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--r-md);
+  padding:16px;margin-bottom:22px;
+}
+.curator-av{
+  width:44px;height:44px;border-radius:50%;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-display);font-size:19px;font-weight:600;
+  color:var(--text);flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(184,212,169,0.25);
+}
+.curator-name{font-size:13px;font-weight:600;margin-bottom:1px;}
+.curator-spec{font-size:11px;color:var(--text-3);margin-bottom:7px;}
+.curator-quote{
+  font-family:var(--font-display);
+  font-size:14px;font-style:italic;
+  color:var(--text-2);line-height:1.6;
+}
+
+/* Timeline */
+.timeline-title{font-size:13px;font-weight:600;margin-bottom:12px;letter-spacing:0.02em;}
+.timeline{display:flex;flex-direction:column;gap:10px;margin-bottom:22px;}
+.tl-item{display:flex;align-items:flex-start;gap:12px;}
+.tl-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.tl-text{font-size:13px;color:var(--text-2);line-height:1.55;}
+
+/* FAQ */
+.faq-title{font-size:13px;font-weight:600;margin:0 0 12px;letter-spacing:0.02em;}
+.faq-list{display:flex;flex-direction:column;gap:7px;margin-bottom:24px;}
+.faq-item{
+  border:1px solid var(--border);
+  border-radius:var(--r-md);overflow:hidden;
+  transition:border-color var(--transition);
+}
+.faq-item:hover,.faq-item.open{border-color:var(--border-focus);}
+.faq-q{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;cursor:pointer;
+  font-size:13px;font-weight:500;
+  background:none;border:none;width:100%;
+  text-align:left;font-family:var(--font-body);
+  color:var(--text);gap:12px;
+}
+.faq-chev{font-size:10px;color:var(--text-3);transition:transform 0.22s;flex-shrink:0;}
+.faq-item.open .faq-chev{transform:rotate(180deg);}
+.faq-a{
+  padding:0 16px;max-height:0;overflow:hidden;
+  font-size:12px;color:var(--text-2);line-height:1.65;
+  transition:max-height 0.28s ease,padding 0.28s ease;
+}
+.faq-item.open .faq-a{max-height:200px;padding:0 16px 13px;}
+
+.result-footer{
+  font-size:12px;color:var(--text-2);line-height:1.7;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--r-md);padding:14px 16px;margin-bottom:16px;
+}
+
+/* ═══════════════════════════════════
+   MOBILE
+═══════════════════════════════════ */
+/* Мобільна бренд-смуга — замість прихованої лівої панелі */
+.mobile-brand-bar{display:none;}
+/* Hero-фото на мобільному (десктоп має ліву панель) */
+.w-hero-mobile{display:none;}
+
+@media(max-width:800px){
+  .quiz-wrap{grid-template-columns:1fr;}
+  .quiz-left{display:none;}
+  .screen,.quiz-header,.quiz-progress{padding-left:20px;padding-right:20px;}
+  .team-grid,.services-grid{grid-template-columns:1fr;}
+  .w-headline{font-size:32px;}
+  .q-title{font-size:26px;}
+
+  .w-hero-mobile{
+    display:block;
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    object-position:center 30%;
+    border-radius:var(--r-md);
+    margin-bottom:22px;
+  }
+
+  .mobile-brand-bar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 20px;
+    background:var(--text);
+    color:#fff;
+    position:sticky;top:0;
+    z-index:30;
+  }
+  .mobile-brand-bar .mb-logo{
+    font-family:var(--font-display);
+    font-size:16px;font-weight:600;font-style:italic;
+    color:#fff;line-height:1;
+  }
+  .mobile-brand-tag{
+    font-size:10px;letter-spacing:0.08em;text-transform:uppercase;
+    color:rgba(255,255,255,0.55);
+  }
+  /* Логотип у хедері дублює бренд-смугу — ховаємо */
+  .quiz-header{top:39px;justify-content:flex-start;}
+  .quiz-logo{display:none;}
+
+  /* Великі кнопки на мобільному */
+  .btn-start,.btn-cont,.btn-primary,.btn-secondary{min-height:56px;}
+}
+
+/* ═══════════════════════════════════
+   SCROLLBAR
+═══════════════════════════════════ */
+.quiz-right::-webkit-scrollbar{width:4px;}
+.quiz-right::-webkit-scrollbar-track{background:transparent;}
+.quiz-right::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+.quiz-right::-webkit-scrollbar-thumb:hover{background:var(--text-3);}
+
+</style>
+</head>
+<body>
+
+<div class="quiz-wrap">
+
+  <!-- ══ LEFT PANEL ══ -->
+  <div class="quiz-left">
+    <div class="quiz-left-inner">
+      <div class="quiz-left-gradient"></div>
+      <img src="assets/B-mask.png" class="quiz-hero-img" alt="ZMINA Beauty">
+      <div class="quiz-hero-veil"></div>
+      <div class="quiz-left-topline"></div>
+      <div class="quiz-left-label">Zmina Beauty · Оболонь</div>
+      <div class="quiz-left-tagline">Косметологія<br><em>зроблена серйозно.</em></div>
+      <div class="quiz-left-caption">Лікарі · Ліцензія МОЗ · Флагманські технології</div>
+    </div>
+  </div>
+
+  <!-- ══ RIGHT PANEL ══ -->
+  <div class="quiz-right" id="quizRight">
+
+    <!-- MOBILE BRAND BAR -->
+    <div class="mobile-brand-bar">
+      <span class="mb-logo">zmina beauty</span>
+      <span class="mobile-brand-tag">Оболонь · Ліцензія МОЗ</span>
+    </div>
+
+    <!-- HEADER -->
+    <header class="quiz-header">
+      <a class="quiz-logo" href="#">zmina beauty</a>
+      <button class="quiz-back" id="backBtn">
+        <span class="quiz-back-arrow">←</span>
+        Назад
+      </button>
+    </header>
+
+    <!-- PROGRESS -->
+    <div class="quiz-progress" id="progressWrap"></div>
+
+    <!-- ══ WELCOME ══ -->
+    <div class="screen active" id="screen-welcome">
+      <img class="w-hero-mobile" src="assets/B-mask.png" alt="ZMINA Beauty">
+      <div class="w-eyebrow">Безкоштовна консультація лікаря-косметолога</div>
+      <h1 class="w-headline">Заповніть форму для запису<br>на консультацію</h1>
+      <p class="w-subhead">Кілька коротких питань — і ви побачите, які саме процедури вирішують вашу задачу. А підтвердити план і поставити свої питання можна на безкоштовній консультації лікаря.</p>
+      <div class="w-counter">
+        <span class="w-counter-pulse"></span>
+        <span><b>127 жінок</b> підібрали рішення цього місяця</span>
+      </div>
+      <div class="w-bullets">
+        <div class="w-bullet"><div class="w-bullet-dot"></div>Консультація лікаря — безкоштовна</div>
+        <div class="w-bullet"><div class="w-bullet-dot"></div>Лікарі з вищою мед.освітою · ліцензія МОЗ</div>
+        <div class="w-bullet"><div class="w-bullet-dot"></div>Флагмани: Morpheus 8 · Lumecca IPL · Endospheres</div>
+      </div>
+      <div class="w-discount">
+        <div class="w-discount-amount">−500 ₴</div>
+        <div class="w-discount-label">на першу процедуру, якщо запишетесь до 30 червня</div>
+      </div>
+      <button class="btn-start" onclick="startQuiz()">
+        Записатись на консультацію
+        <span class="btn-start-arrow">→</span>
+      </button>
+      <p class="w-hint">Час заповнення — 2 хв</p>
+      <div class="w-reviews">
+        <div class="w-reviews-label"><div class="w-reviews-pulse"></div>Реальні результати клієнток</div>
+        <div class="w-review-cards" id="reviewCards"></div>
+      </div>
+    </div>
+
+    <!-- ══ Q1 ══ -->
+    <div class="screen" id="screen-q1">
+      <div class="q-meta">1 / 8</div>
+      <h2 class="q-title">З чого починаємо?</h2>
+      <p class="q-subtitle">Оберіть, що турбує найбільше — далі підлаштуємось саме під вас.</p>
+      <div class="opts" id="opts-q1"></div>
+      <button class="btn-cont" id="btn-q1" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ Q2 (гілкується від Q1) ══ -->
+    <div class="screen" id="screen-q2">
+      <div class="q-meta">2 / 8</div>
+      <h2 class="q-title" id="q2-title">Уточнення</h2>
+      <p class="q-subtitle" id="q2-subtitle"></p>
+      <div class="opts" id="opts-q2"></div>
+      <button class="btn-cont" id="btn-q2" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ AMPLIFIER 1 — команда під напрям (afterQ2) ══ -->
+    <div class="screen" id="screen-amp1">
+      <div class="amp-eyebrow">Ваша команда</div>
+      <h2 class="amp-headline">Цим напрямом у нас<br>займаються лікарі.</h2>
+      <p class="amp-body" id="amp1-body"></p>
+      <div class="team-grid" id="amp1-team"></div>
+      <div class="license-block">
+        <div class="license-title">🏥 Ліцензія МОЗ України</div>
+        <div class="license-body">Наказ МОЗ №569 від 01.05.2026, спеціальність «дерматовенерологія», адреса — Оболонський проспект 26. Ін'єкції і апарати в Україні має право робити тільки косметолог з мед.освітою у ліцензованому закладі.</div>
+        <a href="assets/license-moz.png" target="_blank" rel="noopener"><img class="license-thumb" src="assets/license-moz.png" alt="Витяг з Ліцензійного реєстру МОЗ"></a>
+      </div>
+      <button class="btn-cont" onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ Q3 (гілкується від Q1) ══ -->
+    <div class="screen" id="screen-q3">
+      <div class="q-meta">3 / 8</div>
+      <h2 class="q-title" id="q3-title">Уточнення</h2>
+      <p class="q-subtitle" id="q3-subtitle"></p>
+      <div class="opts" id="opts-q3"></div>
+      <button class="btn-cont" id="btn-q3" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ MINILOAD 1 ══ -->
+    <div class="screen" id="screen-miniload1">
+      <div class="miniload-wrap">
+        <div class="ml-spinner"></div>
+        <div class="ml-text">Зіставляємо ваші відповіді<br>з протоколами лікарів</div>
+      </div>
+    </div>
+
+    <!-- ══ Q4 ══ -->
+    <div class="screen" id="screen-q4">
+      <div class="q-meta">4 / 8</div>
+      <h2 class="q-title">Що для вас найважливіше у результаті?</h2>
+      <p class="q-subtitle">Оберіть, що цінуєте понад усе.</p>
+      <div class="opts" id="opts-q4"></div>
+      <button class="btn-cont" id="btn-q4" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ AMPLIFIER 2 — технології під напрям (afterQ4) ══ -->
+    <div class="screen" id="screen-amp2">
+      <div class="amp-eyebrow">Технології під ваш запит</div>
+      <h2 class="amp-headline">Чим ми працюємо<br>саме з вашим запитом.</h2>
+      <img class="amp-img" id="amp2-img" alt="" style="display:none">
+      <p class="amp-body" id="amp2-body"></p>
+      <div class="services-grid" id="amp2-tech"></div>
+      <button class="btn-cont" onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ Q5 ══ -->
+    <div class="screen" id="screen-q5">
+      <div class="q-meta">5 / 8</div>
+      <h2 class="q-title">Як вам зручно працювати?</h2>
+      <p class="q-subtitle">Чесно: більшість задач вирішується курсом, а не за один раз.</p>
+      <div class="opts" id="opts-q5"></div>
+      <button class="btn-cont" id="btn-q5" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ Q6 ══ -->
+    <div class="screen" id="screen-q6">
+      <div class="q-meta">6 / 8</div>
+      <h2 class="q-title">Як підбираємо протокол?</h2>
+      <p class="q-subtitle">Це допоможе лікарю запропонувати оптимальний протокол.</p>
+      <div class="opts" id="opts-q6"></div>
+      <button class="btn-cont" id="btn-q6" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ MINILOAD 2 ══ -->
+    <div class="screen" id="screen-miniload2">
+      <div class="miniload-wrap">
+        <div class="ml-spinner"></div>
+        <div class="ml-text">Підбираємо оптимальні рішення<br>під ваш запит</div>
+      </div>
+    </div>
+
+    <!-- ══ Q7 ══ -->
+    <div class="screen" id="screen-q7">
+      <div class="q-meta">7 / 8</div>
+      <h2 class="q-title">Коли плануєте візит?</h2>
+      <div class="opts" id="opts-q7"></div>
+      <button class="btn-cont" id="btn-q7" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ Q8 ══ -->
+    <div class="screen" id="screen-q8">
+      <div class="q-meta">8 / 8</div>
+      <h2 class="q-title">До якої вікової категорії належите?</h2>
+      <p class="q-subtitle">Допомагає лікарю точніше підібрати протокол.</p>
+      <div class="opts" id="opts-q8"></div>
+      <button class="btn-cont" id="btn-q8" disabled onclick="nextScreen()">Продовжити</button>
+    </div>
+
+    <!-- ══ LEAD ══ -->
+    <div class="screen" id="screen-lead">
+      <div class="lead-eyebrow">Останній крок</div>
+      <h2 class="lead-headline" id="lead-headline">Запишемо вас на безкоштовну консультацію</h2>
+      <p class="lead-subhead">Залиште номер — менеджер зателефонує, підтвердить зручний час і відповість на ваші питання.</p>
+      <div class="lead-form">
+        <div class="lead-field">
+          <input class="lead-input" id="field-name" type="text" placeholder="Як до вас звертатись?" autocomplete="given-name">
+        </div>
+        <div class="lead-field">
+          <input class="lead-input" id="field-phone" type="tel" placeholder="Номер телефону для запису" autocomplete="tel">
+        </div>
+      </div>
+      <button class="btn-cont" id="btn-lead" onclick="submitLead()">Записатися на консультацію →</button>
+      <div class="lead-secure">🔒 Телефонуємо лише щодо запису · без спаму</div>
+    </div>
+
+    <!-- ══ LOADING ══ -->
+    <div class="screen" id="screen-loading">
+      <div class="loading-wrap">
+        <div class="loading-spinner"></div>
+        <div class="loading-steps" id="loadingSteps"></div>
+        <div class="loading-final" id="loadingFinal">Готово — попередній напрям сформовано.</div>
+      </div>
+    </div>
+
+    <!-- ══ RESULT ══ -->
+    <div class="screen" id="screen-result">
+      <div class="result-eyebrow">Заявку прийнято</div>
+      <h2 class="result-headline" id="resultGreeting">Дякуємо! Вашу заявку прийнято.</h2>
+      <p class="result-subhead">Менеджер зателефонує найближчим часом, щоб підтвердити зручний час консультації. А поки — ось напрям, який ми підібрали за вашими відповідями (фінальний план лікар уточнить на огляді).</p>
+      <div class="result-card">
+        <div class="result-card-title" id="resultTitle">—</div>
+        <div class="result-body" id="resultShort">—</div>
+        <div class="result-body result-body-full" id="resultDeep">—</div>
+        <button class="result-expand" id="expandBtn" onclick="toggleExpand()">Читати більше ↓</button>
+      </div>
+      <div class="result-ctas">
+        <a class="btn-primary" id="ctaDirect" href="#" target="_blank" rel="noopener">Написати у Direct зараз</a>
+        <a class="btn-secondary" id="ctaCall" href="#">Зателефонувати</a>
+      </div>
+      <div class="timeline-title">Що далі:</div>
+      <div class="timeline" id="timeline"></div>
+      <div class="faq-title">Часті питання</div>
+      <div class="faq-list" id="faqList"></div>
+      <div class="result-footer">✅ Готово! Ми отримали вашу заявку і незабаром зателефонуємо, щоб записати на безкоштовну консультацію. Ваші відповіді вже у косметолога — не доведеться розповідати все заново.</div>
+    </div>
+
+  </div><!-- /quiz-right -->
+</div><!-- /quiz-wrap -->
+
+<script>
+/* ═══════════════════════════════════════════════════
+   ДАНІ — редагуй тут
+═══════════════════════════════════════════════════ */
+const DATA = {
+  webhookUrl: '', // підстав свій URL
+
+  // ⚠️ ПІДСТАВ реальні контакти салону
+  contact: {
+    instagram: 'https://instagram.com/zmina.beauty',
+    phone:     '+380443334455', // tel: посилання
+  },
+
+  reviews:[
+    {name:'Анна, 34',    action:'Lumecca IPL — рівний тон за 3 процедури'},
+    {name:'Олена, 29',   action:'курс Lumecca під пігментацію — мінус плями'},
+    {name:'Марія, 41',   action:'Morpheus 8 — підтягнутий овал без скальпеля'},
+    {name:'Юлія, 36',    action:'Endospheres — форма після пологів'},
+    {name:'Катерина, 45',action:'розчинення філера + акуратна корекція'},
+  ],
+
+  questions:{
+    q1:[
+      {id:'age',       label:'Вікові зміни обличчя',  caption:'Зморшки, овал поплив, втомлений вигляд'},
+      {id:'skin',      label:'Якість шкіри',           caption:'Пігментація, акне/постакне, купероз, тьмяний тон'},
+      {id:'body',      label:'Фігура та тіло',         caption:'Целюліт, після пологів, в\'ялість, локальні об\'єми'},
+      {id:'injection', label:'Ін\'єкції та губи',      caption:'Ботокс, філери, біоревіталізація, корекція результату'},
+      {id:'hair',      label:'Випадіння волосся',      caption:'Після стресу, пологів або хвороби — мезотерапія'},
+      {id:'support',   label:'Догляд і профілактика',  caption:'Сяйво, anti-age на ранньому етапі, підтримка'},
+    ],
+    q2:{
+      age:{title:'Де вікові зміни помітні найбільше?', sub:'Оберіть зону, яка турбує понад усе.', opts:[
+        {id:'upper', label:'Чоло, брови, міжбрів\'я',        caption:'Горизонтальні зморшки, нависання'},
+        {id:'eyes',  label:'Зона навколо очей',             caption:'«Гусячі лапки», набряки, кола'},
+        {id:'mid',   label:'Вилиці та носогубні складки',   caption:'Втрата об\'єму, складки'},
+        {id:'oval',  label:'Овал обличчя і шия',            caption:'Брили, овал «поплив»'},
+        {id:'all',   label:'Все обличчя загалом',           caption:'Загальний втомлений вигляд'},
+      ]},
+      skin:{title:'Що саме зі шкірою турбує?', sub:'Оберіть головну проблему — далі уточнимо деталі.', opts:[
+        {id:'pigment', label:'Пігментація і нерівний тон',  caption:'Плями, сліди від сонця'},
+        {id:'acne',    label:'Акне і постакне',             caption:'Висипання, сліди, розширені пори'},
+        {id:'vessels', label:'Купероз і почервоніння',      caption:'Судини, розацеа, чутливість'},
+        {id:'dull',    label:'Тьмяність і сухість',         caption:'Немає сяйва, шкіра втомлена'},
+        {id:'texture', label:'Нерівна текстура і пори',     caption:'Рельєф, жирний блиск'},
+      ]},
+      body:{title:'Над якою зоною тіла працюємо?', sub:'Можна почати з однієї зони — далі розширимо.', opts:[
+        {id:'belly', label:'Живіт і талія'},
+        {id:'legs',  label:'Стегна і сідниці',              caption:'Целюліт, рельєф'},
+        {id:'arms',  label:'Руки'},
+        {id:'back',  label:'Спина і боки'},
+        {id:'full',  label:'Все тіло комплексно'},
+      ]},
+      injection:{title:'Який у вас запит по ін\'єкціях?', sub:'Лікар підбере препарат і дозу під нього.', opts:[
+        {id:'botox',   label:'Ботокс — розгладити міміку',  caption:'Чоло, міжбрів\'я, очі'},
+        {id:'lips',    label:'Губи — об\'єм і форма',        caption:'Контурна пластика'},
+        {id:'biorev',  label:'Біоревіталізація',            caption:'Зволоження, якість шкіри'},
+        {id:'contour', label:'Контурна корекція обличчя',   caption:'Вилиці, підборіддя, ніс'},
+        {id:'fix',     label:'Виправити попередній результат',caption:'Розчинення, корекція'},
+      ]},
+      hair:{title:'Що відбувається з волоссям?', sub:'Це допоможе визначити причину і підхід.', opts:[
+        {id:'loss',   label:'Активно випадає',              caption:'Помітно більше, ніж раніше'},
+        {id:'thin',   label:'Стало тонким і рідким',        caption:'Втратило густоту й об\'єм'},
+        {id:'scalp',  label:'Проблеми зі шкірою голови',    caption:'Лупа, жирність, свербіж'},
+        {id:'growth', label:'Повільно росте',               caption:'Хочу прискорити ріст'},
+      ]},
+      support:{title:'Що хочете від догляду?', sub:'Оберіть головну ціль на зараз.', opts:[
+        {id:'glow',    label:'Сяйво і свіжість',            caption:'«Відпочилий» вигляд шкіри'},
+        {id:'clean',   label:'Глибоке очищення пор',        caption:'Чистка, регулярний догляд'},
+        {id:'prevent', label:'Профілактика старіння',       caption:'Anti-age на ранньому етапі'},
+        {id:'event',   label:'Підготовка до події',         caption:'Виглядати ідеально до дати'},
+      ]},
+    },
+    q3:{
+      age:      {title:'Який результат для вас головний?', sub:'Це задасть напрям протоколу.', opts:[
+        {id:'smooth',  label:'Розгладити зморшки'},
+        {id:'lift',    label:'Підтягнути овал і контури'},
+        {id:'fresh',   label:'Прибрати втому і набряки'},
+        {id:'density', label:'Повернути щільність і пружність'},
+      ]},
+      skin:     {title:'Як давно ви з цим живете?', sub:'Від цього залежить тактика лікаря.', opts:[
+        {id:'new',    label:'З\'явилось нещодавно'},
+        {id:'months', label:'Кілька місяців'},
+        {id:'years',  label:'Роками — пробувала різне'},
+        {id:'season', label:'Загострюється сезонно'},
+      ]},
+      body:     {title:'Яка головна задача по тілу?', sub:'Оберіть пріоритет №1.', opts:[
+        {id:'cellulite', label:'Прибрати целюліт'},
+        {id:'postpartum',label:'Відновитись після пологів'},
+        {id:'firm',      label:'Підтягнути в\'ялу шкіру'},
+        {id:'volume',    label:'Зменшити локальні об\'єми'},
+        {id:'lymph',     label:'Набряки і лімфодренаж'},
+      ]},
+      injection:{title:'Який у вас досвід ін\'єкцій?', sub:'Без оцінок — просто щоб лікар розумів контекст.', opts:[
+        {id:'first',  label:'Це буде вперше'},
+        {id:'repeat', label:'Робила раніше — хочу підтримати'},
+        {id:'fix',    label:'Хочу виправити попереднє'},
+        {id:'advice', label:'Не впевнена — треба порада лікаря'},
+      ]},
+      hair:     {title:'Коли почались зміни?', sub:'Це допомагає знайти причину.', opts:[
+        {id:'recent',  label:'Нещодавно (до 3 місяців)'},
+        {id:'half',    label:'Пів року або більше'},
+        {id:'trigger', label:'Після стресу, пологів або хвороби'},
+        {id:'long',    label:'Давня історія'},
+      ]},
+      support:  {title:'Як ви доглядаєте за собою зараз?', sub:'Щоб не повторювати те, що вже робите.', opts:[
+        {id:'pro',   label:'Регулярно ходжу до косметолога'},
+        {id:'home',  label:'Тільки домашній догляд'},
+        {id:'rare',  label:'Час від часу'},
+        {id:'start', label:'Майже ніяк — хочу почати'},
+      ]},
+    },
+    q4:[
+      {id:'natural', label:'Природний результат',          caption:'Без ефекту «переробленості»'},
+      {id:'visible', label:'Максимально видимий ефект',     caption:'Хочу чітку, помітну різницю'},
+      {id:'lasting', label:'Щоб результат тримався довго',  caption:'Готова на курс заради цього'},
+      {id:'safe',    label:'Безпека і перевірені методики', caption:'Мінімум ризиків і відновлення'},
+    ],
+    q5:[
+      {id:'instant', label:'Хочу швидкі перші зміни',   caption:'Готова продовжити курсом'},
+      {id:'weeks',   label:'Результат за кілька тижнів', caption:'Розумію логіку курсу'},
+      {id:'course',  label:'Готова до повного курсу',    caption:'3–6 процедур під задачу'},
+      {id:'nohurry', label:'Без чітких термінів',        caption:'Безпека та коректний підхід'},
+    ],
+    q6:[
+      {id:'premium',  label:'Флагманські технології',    caption:'Morpheus 8, Lumecca IPL, Endospheres'},
+      {id:'balanced', label:'Збалансований протокол',    caption:'Ефективність + розумна ціна'},
+      {id:'budget',   label:'Бюджетний старт',           caption:'Базові процедури з можливістю докласти курс'},
+      {id:'any',      label:'Орієнтуюсь на рекомендацію',caption:'Готова обговорити будь-який варіант'},
+    ],
+    q7:[
+      {id:'soon',    label:'Найближчими днями',            caption:'Це важливо для мене зараз'},
+      {id:'weeks23', label:'Протягом 2-3 тижнів'},
+      {id:'looking', label:'Збираю інформацію'},
+      {id:'gift',    label:'Для подарунка або для близької людини'},
+    ],
+    q8:[
+      {id:'u25',   label:'До 25 років'},
+      {id:'25-35', label:'25–35 років'},
+      {id:'35-45', label:'35–45 років'},
+      {id:'45p',   label:'45+ років'},
+    ],
+  },
+
+  // ═══ Персоналізація під напрям (q1): команда, технології, тексти, куратор ═══
+  branches:{
+    age:{
+      plan:'омолодженню',
+      load1:'Аналізуємо ваш запит щодо вікових змін...',
+      load2:'Формуємо anti-age протокол під обрані зони...',
+      teamIntro:'Anti-age і апаратний ліфтинг у нас ведуть лікарі-косметологи з вищою медичною освітою:',
+      team:[
+        {av:'М',name:'Марія',spec:'Лікар-косметолог · стаж 8+ років',focus:'Anti-age, Morpheus 8, Lumecca IPL, контурна пластика'},
+        {av:'П',name:'Поліна',spec:'Майстер апаратної косметології',focus:'Endospheres — ліфтинг і тонус обличчя'},
+      ],
+      techIntro:'Для роботи з віковими змінами використовуємо флагманські апарати:',
+      tech:[
+        {cat:'Апаратний ліфтинг',brand:'Morpheus 8',sub:'RF-мікронідлінг: овал, щільність, пори — без скальпеля.'},
+        {cat:'Фотоомолодження',brand:'Lumecca IPL',sub:'Рівний тон, сяйво, судини і пігмент.'},
+        {cat:'Ін\'єкційна підтримка',brand:'Біоревіталізація · ботокс',sub:'Зволоження шкіри і розгладження міміки.'},
+      ],
+      curator:{name:'Марія',spec:'Anti-age, Morpheus 8, IPL'},
+    },
+    skin:{
+      plan:'роботі зі шкірою',
+      load1:'Аналізуємо стан і тип вашої шкіри...',
+      load2:'Підбираємо протокол під вашу проблему...',
+      teamIntro:'Лікуванням шкіри у нас займаються лікарі-косметологи:',
+      team:[
+        {av:'К',name:'Катерина',spec:'Лікар-косметолог · стаж 7+ років',focus:'Акне, постакне, пілінги, проблемна шкіра'},
+        {av:'М',name:'Марія',spec:'Лікар-косметолог',focus:'Lumecca IPL — тон, судини, пігмент, постакне'},
+      ],
+      techIntro:'Для роботи з якістю шкіри застосовуємо:',
+      tech:[
+        {cat:'Фотоомолодження',brand:'Lumecca IPL',sub:'Пігмент, судини, постакне, рівний тон.'},
+        {cat:'Медичні пілінги',brand:'DMK · IS Clinical',sub:'Ферментотерапія і пілінги під контролем лікаря.'},
+        {cat:'Чистки',brand:'Комбінована чистка',sub:'Глибоке очищення без травми шкіри.'},
+      ],
+      curator:{name:'Катерина',spec:'Акне, постакне, пілінги'},
+    },
+    body:{
+      plan:'роботі з тілом',
+      load1:'Аналізуємо ваш запит щодо тіла...',
+      load2:'Формуємо курс під обрану зону...',
+      teamIntro:'Над тілом працює окрема команда — апаратний майстер і масажист:',
+      team:[
+        {av:'П',name:'Поліна',spec:'Майстер апаратної косметології',focus:'Endospheres Essenza — целюліт, тонус, лімфа'},
+        {av:'І',name:'Іра',spec:'Майстер масажу',focus:'Антицелюлітний, лімфодренаж, відновлення'},
+      ],
+      techIntro:'Для роботи з тілом — курсові технології:',
+      tech:[
+        {cat:'Апаратна корекція',brand:'Endospheres Essenza',sub:'Целюліт, набряки, тонус шкіри. Курс 10–12.'},
+        {cat:'Масаж і лімфа',brand:'Лімфодренаж · антицелюлітний',sub:'Набряки, відновлення після пологів.'},
+        {cat:'Догляд за тілом',brand:'Обгортання · догляди',sub:'Живлення і гладкість шкіри.'},
+      ],
+      curator:{name:'Поліна',spec:'Endospheres, тіло'},
+    },
+    injection:{
+      plan:'ін\'єкційному догляду',
+      load1:'Аналізуємо ваш ін\'єкційний запит...',
+      load2:'Готуємо варіанти препаратів і доз...',
+      teamIntro:'Ін\'єкції у нас робить лікар-косметолог з медичною освітою — це вимога закону:',
+      team:[
+        {av:'М',name:'Марія',spec:'Лікар-косметолог · стаж 8+ років',focus:'Ботокс, філери, контурна пластика, біоревіталізація'},
+        {av:'К',name:'Катерина',spec:'Лікар-косметолог',focus:'Біоревіталізація, мезотерапія, якість шкіри'},
+      ],
+      techIntro:'Працюємо лише сертифікованими препаратами:',
+      tech:[
+        {cat:'Ботулінотерапія',brand:'Allergan · Xeomin',sub:'Розгладження міміки — обличчя залишається живим.'},
+        {cat:'Філери',brand:'Juvederm',sub:'Губи, вилиці, підборіддя, носогубні складки.'},
+        {cat:'Біоревіталізація',brand:'Rejuran · Jalupro',sub:'Зволоження і якість шкіри зсередини.'},
+      ],
+      curator:{name:'Марія',spec:'Ботокс, філери, біоревіт'},
+    },
+    hair:{
+      plan:'відновленню волосся',
+      load1:'Аналізуємо ваш запит щодо волосся...',
+      load2:'Підбираємо курс для відновлення волосся...',
+      teamIntro:'Випадінням волосся у нас займається лікар-косметолог:',
+      team:[
+        {av:'К',name:'Катерина',spec:'Лікар-косметолог · стаж 7+ років',focus:'Мезотерапія шкіри голови, трихологічні протоколи'},
+        {av:'М',name:'Марія',spec:'Лікар-косметолог',focus:'Біоревіталізація і супровід курсу'},
+      ],
+      techIntro:'Для відновлення волосся застосовуємо:',
+      tech:[
+        {cat:'Мезотерапія',brand:'Hairfoll · HYAL Grade',sub:'Вітаміни і пептиди в кореневу зону. Курс 6–8.'},
+        {cat:'Діагностика',brand:'Консультація лікаря',sub:'Шукаємо причину, а не маскуємо наслідок.'},
+        {cat:'Підтримка',brand:'Професійний домашній догляд',sub:'Закріплюємо результат між процедурами.'},
+      ],
+      curator:{name:'Катерина',spec:'Мезотерапія шкіри голови'},
+    },
+    support:{
+      plan:'догляду за шкірою',
+      load1:'Аналізуємо ваш запит щодо догляду...',
+      load2:'Формуємо доглядовий ритуал під вас...',
+      teamIntro:'Доглядові протоколи ведуть наші косметологи:',
+      team:[
+        {av:'М',name:'Марія',spec:'Лікар-косметолог · стаж 8+ років',focus:'Доглядові протоколи, anti-age профілактика'},
+        {av:'К',name:'Катерина',spec:'Лікар-косметолог',focus:'Чистки, пілінги, здоров\'я шкіри'},
+      ],
+      techIntro:'Для догляду і профілактики:',
+      tech:[
+        {cat:'Преміум-догляди',brand:'DMK · IS Clinical',sub:'Ферментотерапія, «Вогонь і Лід».'},
+        {cat:'Чистки',brand:'Медичні чистки',sub:'Комбінована, ультразвук, без травми.'},
+        {cat:'Сяйво до події',brand:'Карбокситерапія',sub:'Свіжий вигляд уже після першої процедури.'},
+      ],
+      curator:{name:'Марія',spec:'Доглядові протоколи, чистки'},
+    },
+  },
+
+  results:{
+    RESULT_A_skin:     {title:'Робота з якістю шкіри: тон, пігмент, акне, купероз', short:'Шкіра відмовляється «просто бути спокійною»: запалення, нерівний тон, або судини стали помітні. Це не «зробити одну чистку — і все буде ок». Це задача, де лікар спочатку бачить, з чим маємо справу, і вже потім обирає інструмент.', deep:'Найчастіша помилка — почати з агресивної процедури «бо це нове». Активне акне у 30 не любить апаратний ліфтинг. Розацеа не любить кислотні пілінги. Пігментацію не «прибере» одна процедура — це робота шарами.\n\nНаш флагман для якості шкіри — IPL Lumecca. Це IPL з впізнаваним брендом і високою енергією у спектрі 500-600 нм — закриває тон, судини, пігмент і постакне в одному курсі (3-4 процедури).'},
+    RESULT_B_support:  {title:'Доглядові протоколи: чистка, ритуал, wow-ефект', short:'Шкіра здорова — але хочеться, щоб вона виглядала свіжо. Тьмяний тон після зими, забиті пори, треба «вигляд на завтра» перед подією. Це не «лікувати», це тримати шкіру у формі.', deep:'Тут саме той випадок, коли НЕ треба апаратів і ін\'єкцій. Чистка раз на 4-6 тижнів — економить вам пілінги і ін\'єкції на роки вперед. Перед подією — IS Clinical «Вогонь і Лід» або карбокситерапія дають ефект одразу.'},
+    RESULT_C_injection:{title:'Ін\'єкції: свіжість, об\'єм, якість шкіри', short:'Не «зайти і вколоти», а медична процедура, де якість результату на 50% залежить від препарату і на 50% — від руки лікаря. Спочатку ми проговорюємо, що вам не подобається в дзеркалі. Тільки потім — голка.', deep:'Три різні задачі — три різні препарати. Якщо хвилює міміка — це зональний ботулін, у нас Allergan і Xeomin, лікар розрахує дозу так, щоб залишилось живе обличчя. Якщо очі «сховались» — це, скоріш за все, птоз або западання скроні, і тут потрібен філер, а не ботулін.'},
+    RESULT_D_lifting:  {title:'Апаратний ліфтинг: овал і щільність шкіри без скальпеля', short:'Овал поплив, шкіра стала тоншою — і ви хочете щось зробити, але без хірургії і «заморожених облич». Саме для цього існує апаратна косметологія.', deep:'Наш флагман — Morpheus 8 (Inmode, США). RF разом із мікронаколюванням прогрівають SMAS-шар і запускають ремоделювання колагену. Результат — ліфтинг овалу, скорочення пор, щільність шкіри. Ефект накопичується 3-6 місяців і тримається 1.5-2 роки.'},
+    RESULT_E_body:     {title:'Тіло: целюліт, після пологів, тонус', short:'Ендосфери, масаж, лімфодренаж — не «схуднення», а курсова робота з якістю шкіри і контуром тіла. 10-12 процедур курсом дають видимий результат, який не зникає, якщо підтримувати.', deep:'Endospheres Essenza — наш флагман для тіла. Технологія використовує циліндри з вакуумом і вібрацією для механічного розбиття фіброзних перегородок целюліту та стимуляції лімфи. 10-12 процедур курсом — помітний результат на фото.'},
+    RESULT_F_ritual:   {title:'Відновлення тіла: масаж, лімфа, перезавантаження', short:'Іноді тілу потрібно не «схуднути» і не «підтягнутись» — а просто відпустити напругу, повернути відчуття себе. Масаж, лімфодренаж, ароматичні ритуали — це регуляція нервової системи.', deep:'Наш масажист Іра спеціалізується на антицелюлітному, лімфодренажному і релакс-масажі. Курс 4-6 процедур — помітна різниця в набряках, тонусі і самопочутті.'},
+    RESULT_G_hair:     {title:'Випадіння волосся: розібратись з причиною і зупинити', short:'Випадіння волосся у жінок — це найчастіше стрес, зміна гормонального фону або нутрієнтний дефіцит. Мезотерапія шкіри голови — один із найефективніших інструментів для відновлення.', deep:'Ми пропонуємо курс мезотерапії шкіри голови з коктейлями Hairfoll або HYAL Grade — вітаміни, мінерали, пептиди безпосередньо в кореневу зону. Курс 6-8 процедур 1 раз на 1-2 тижні.'},
+    RESULT_G_niche:    {title:'Точкові рішення під вузькі запити', short:'Ваш запит виходить за рамки стандартного «акне-ліфтинг-тіло» — і це добре. Значить, вам потрібна не типова рекомендація, а розмова з лікарем.', deep:'На консультації косметолог розбере ваш запит детально — з анамнезом, оглядом шкіри і підбором саме тих інструментів, які закриють задачу.'},
+  },
+
+  resultMap:{
+    age:'RESULT_D_lifting', skin:'RESULT_A_skin', body:'RESULT_E_body',
+    injection:'RESULT_C_injection', hair:'RESULT_G_hair', support:'RESULT_B_support',
+  },
+
+  timeline:[
+    {icon:'✅', text:'Заявку отримано'},
+    {icon:'📞', text:'Зателефонуємо найближчим часом — підтвердимо зручний час'},
+    {icon:'👩‍⚕️',text:'Безкоштовна консультація 30–40 хв — діагностика і ваш план'},
+    {icon:'✨', text:'Починаємо з процедури, яку оберете разом із лікарем'},
+  ],
+
+  faq:[
+    {q:'Консультація справді безкоштовна?',     a:'Так. Ви не платите за діагностику і підбір плану — оплачуються лише процедури, якщо ви вирішите їх робити. А до 30 червня — ще й −500 ₴ на першу процедуру.'},
+    {q:'А мене не змусять одразу щось робити?',  a:'Ні. Консультація ні до чого не зобов\'язує: лікар проведе діагностику, відповість на питання і складе план. Робити процедури чи ні — вирішуєте тільки ви.'},
+    {q:'Чи треба готуватись до візиту?',         a:'Прийдіть з чистою шкірою (без макіяжу), за добу — без алкоголю. Усе інше уточнимо при дзвінку.'},
+    {q:'Як швидко буде результат?',             a:'Залежить від задачі. Одноразові ефекти помітні вже після першої процедури. Курсові результати — за 3–6 тижнів після початку курсу.'},
+    {q:'Де ви знаходитесь?',                     a:'Оболонський проспект 26, Київ. Метро Мінська або Оболонь.'},
+  ],
+
+  loadingSteps:[
+    'Аналізуємо ваш запит',
+    'Зіставляємо з нашими протоколами',
+    'Готуємо персональний напрям',
+    'Передаємо ваші відповіді косметологу',
+  ],
+};
+
+/* ═══════════════════════════════════════════════════
+   СТАН
+═══════════════════════════════════════════════════ */
+const state = { current: 'welcome', answers: {}, leadData: {} };
+
+const SEQ = [
+  'welcome','q1','q2','amp1','q3','miniload1',
+  'q4','amp2','q5','q6','miniload2','q7','q8',
+  'lead','loading','result'
+];
+
+// Екрани, що формують прогрес-бар (q1..q8 + lead)
+const PROGRESS_SCREENS = ['q1','q2','q3','q4','q5','q6','q7','q8','lead'];
+
+// Фото команди (за іменем) і фото-процедури (за напрямом q1)
+const TEAM_PHOTOS = {
+  'Марія':    'assets/Maria_Cosmetolog.png',
+  'Катерина': 'assets/Kateryna_Cosmetolog.png',
+  'Поліна':   'assets/Polina_endosphere.png',
+  'Іра':      'assets/Ira_massage.png',
+  'Віта':     'assets/Vita_director.png',
+  'Ольга':    'assets/Olga_owner.png',
+};
+const DIRECTION_PHOTOS = {
+  age:       'assets/morpheus_8.png',
+  body:      'assets/E-endospheres.png',
+  injection: 'assets/C-injection.png',
+};
+
+// Поточна гілка персоналізації (за відповіддю на q1)
+function branch() {
+  return DATA.branches[state.answers.q1] || DATA.branches.support;
+}
+// Лейбли вибраних відповідей — для вставляння у копірайт
+function q1Label() {
+  const o = DATA.questions.q1.find(o => o.id === state.answers.q1);
+  return o ? o.label.toLowerCase() : '';
+}
+function q2Label() {
+  const b = DATA.questions.q2[state.answers.q1];
+  if(!b) return '';
+  const o = b.opts.find(o => o.id === state.answers.q2);
+  return o ? o.label : '';
+}
+
+/* ═══════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  buildReviewCards();
+  // q2 і q3 будуються динамічно (гілкуються від відповіді на q1)
+  ['q1','q4','q5','q6','q7','q8'].forEach(q => buildOpts(q, DATA.questions[q]));
+  buildTimeline();
+  buildFAQ();
+  buildProgress();
+});
+
+function buildReviewCards() {
+  const wrap = document.getElementById('reviewCards');
+  if(!wrap) return;
+  wrap.innerHTML = DATA.reviews.slice(0,3).map(r => `
+    <div class="w-review-card">
+      <div class="w-review-av">${r.name.trim().charAt(0)}</div>
+      <div>
+        <div class="w-review-name">${r.name}</div>
+        <div class="w-review-result">${r.action}</div>
+      </div>
+    </div>`).join('');
+}
+
+function buildOpts(qid, opts) {
+  const el = document.getElementById(`opts-${qid}`);
+  if(!el) return;
+  el.innerHTML = opts.map(o => `
+    <button class="opt" data-qid="${qid}" data-id="${o.id}" onclick="pick('${qid}','${o.id}',this)">
+      <span class="opt-label">${o.label}</span>
+      ${o.caption ? `<span class="opt-caption">${o.caption}</span>` : ''}
+    </button>`).join('');
+}
+
+function buildTimeline() {
+  document.getElementById('timeline').innerHTML = DATA.timeline.map(t =>
+    `<div class="tl-item"><span class="tl-icon">${t.icon}</span><span class="tl-text">${t.text}</span></div>`
+  ).join('');
+}
+
+function buildFAQ() {
+  document.getElementById('faqList').innerHTML = DATA.faq.map((f,i) => `
+    <div class="faq-item" id="faq${i}">
+      <button class="faq-q" onclick="faqToggle(${i})">${f.q}<span class="faq-chev">▼</span></button>
+      <div class="faq-a">${f.a}</div>
+    </div>`).join('');
+}
+
+function buildProgress() {
+  const wrap = document.getElementById('progressWrap');
+  wrap.innerHTML = `
+    <div class="qp-bar"><div class="qp-fill" id="qpFill"></div></div>
+    <div class="qp-meta">
+      <span id="qpLabel">Почали</span>
+      <span class="qp-pct" id="qpPct">0%</span>
+    </div>`;
+}
+
+function updateProgress() {
+  const noProgress = ['welcome','loading','result'];
+  const pw = document.getElementById('progressWrap');
+  pw.classList.toggle('show', !noProgress.includes(state.current));
+
+  // Крок = найдальший пройдений progress-екран у послідовності (amp/miniload переносять значення)
+  const seqIdx = SEQ.indexOf(state.current);
+  let step = 0;
+  for(let i = 0; i <= seqIdx; i++) {
+    const pi = PROGRESS_SCREENS.indexOf(SEQ[i]);
+    if(pi >= 0) step = pi + 1;
+  }
+  const pct = Math.round((step / PROGRESS_SCREENS.length) * 100);
+
+  const fill  = document.getElementById('qpFill');
+  const pctEl = document.getElementById('qpPct');
+  const label = document.getElementById('qpLabel');
+  if(fill)  fill.style.width = pct + '%';
+  if(pctEl) pctEl.textContent = pct + '%';
+  if(label) {
+    label.textContent =
+      state.current === 'lead' ? 'Останній крок'
+      : pct >= 80 ? 'Майже готово'
+      : pct >= 40 ? 'Гарно йде'
+      : 'Почали';
+  }
+}
+
+/* ═══════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════ */
+function show(id) {
+  const cur = document.getElementById(`screen-${state.current}`);
+  const next = document.getElementById(`screen-${id}`);
+  if(!next) return;
+  if(cur) cur.classList.remove('active');
+  next.classList.add('active');
+  state.current = id;
+  document.getElementById('quizRight').scrollTo({top:0, behavior:'smooth'});
+  updateProgress();
+  document.getElementById('backBtn').classList.toggle('visible',
+    !['welcome','loading','result'].includes(id));
+}
+
+function startQuiz() {
+  if(window.fbq) fbq('track', 'ViewContent', { content_name: 'zmina_quiz_start' });
+  show('q1');
+}
+
+function nextScreen() {
+  const idx = SEQ.indexOf(state.current);
+  if(idx < 0 || idx >= SEQ.length - 1) return;
+  const next = SEQ[idx + 1];
+  if(next === 'q2')   buildQ2();
+  if(next === 'q3')   buildQ3();
+  if(next === 'amp1') buildAmp1();
+  if(next === 'amp2') buildAmp2();
+  if(next === 'lead' && window.fbq) fbq('track', 'InitiateCheckout');
+  if(next === 'miniload1' || next === 'miniload2') {
+    const b = branch();
+    const txt = (next === 'miniload1' ? b.load1 : b.load2) || 'Зіставляємо ваші відповіді з протоколами лікарів...';
+    const ml = document.querySelector(`#screen-${next} .ml-text`);
+    if(ml) ml.textContent = txt;
+    show(next);
+    setTimeout(nextScreen, 2100);
+    return;
+  }
+  show(next);
+}
+
+function buildQ2() {
+  const branch = DATA.questions.q2[state.answers.q1] || DATA.questions.q2.support;
+  document.getElementById('q2-title').textContent = branch.title;
+  document.getElementById('q2-subtitle').textContent = branch.sub || '';
+  buildOpts('q2', branch.opts);
+  document.getElementById('btn-q2').disabled = true;
+}
+
+function buildQ3() {
+  const br = DATA.questions.q3[state.answers.q1] || DATA.questions.q3.support;
+  document.getElementById('q3-title').textContent = br.title;
+  document.getElementById('q3-subtitle').textContent = br.sub || '';
+  buildOpts('q3', br.opts);
+  document.getElementById('btn-q3').disabled = true;
+}
+
+// Команда під обраний напрям
+function buildAmp1() {
+  const b = branch();
+  const sel = q2Label();
+  const body = document.getElementById('amp1-body');
+  if(body) body.textContent = (sel ? `Ви обрали: «${sel}». ` : '') + b.teamIntro;
+  const grid = document.getElementById('amp1-team');
+  if(grid) grid.innerHTML = b.team.map(t => {
+    const photo = TEAM_PHOTOS[t.name];
+    const av = photo ? `<img src="${photo}" alt="${t.name}">` : t.av;
+    return `
+    <div class="team-card">
+      <div class="team-av">${av}</div>
+      <div class="team-name">${t.name}</div>
+      <div class="team-spec">${t.spec}</div>
+      <div class="team-focus">${t.focus}</div>
+    </div>`;
+  }).join('');
+}
+
+// Технології під обраний напрям
+function buildAmp2() {
+  const b = branch();
+  const photo = DIRECTION_PHOTOS[state.answers.q1];
+  const img = document.getElementById('amp2-img');
+  if(img) {
+    if(photo) { img.src = photo; img.style.display = 'block'; }
+    else { img.removeAttribute('src'); img.style.display = 'none'; }
+  }
+  const body = document.getElementById('amp2-body');
+  if(body) body.textContent = b.techIntro;
+  const grid = document.getElementById('amp2-tech');
+  if(grid) grid.innerHTML = b.tech.map(s => `
+    <div class="service-card">
+      <div class="service-cat">${s.cat}</div>
+      <div class="service-brand">${s.brand}</div>
+      <div class="service-sub">${s.sub}</div>
+    </div>`).join('');
+}
+
+
+document.getElementById('backBtn').addEventListener('click', () => {
+  const idx = SEQ.indexOf(state.current);
+  if(idx <= 0) return;
+  let prev = SEQ[idx - 1];
+  if(prev === 'miniload1' || prev === 'miniload2') prev = SEQ[idx - 2];
+  show(prev);
+});
+
+/* ═══════════════════════════════════════════════════
+   OPTION PICK
+═══════════════════════════════════════════════════ */
+function pick(qid, optId, btn) {
+  document.querySelectorAll(`#opts-${qid} .opt`).forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  state.answers[qid] = optId;
+  const cb = document.getElementById(`btn-${qid}`);
+  if(cb) cb.disabled = false;
+
+  // Автоперехід — щоб людина встигла побачити свій вибір
+  setTimeout(() => {
+    if(state.current === qid) nextScreen();
+  }, 340);
+}
+
+/* ═══════════════════════════════════════════════════
+   LEAD
+═══════════════════════════════════════════════════ */
+function submitLead() {
+  const phone = document.getElementById('field-phone').value.trim();
+  if(!phone) { document.getElementById('field-phone').focus(); return; }
+  state.leadData = {
+    name:  document.getElementById('field-name').value.trim(),
+    phone, answers: {...state.answers}
+  };
+  if(window.fbq) fbq('track', 'Lead', {
+    content_name: 'zmina_quiz_lead',
+    content_category: 'beauty_consultation'
+  });
+  if(DATA.webhookUrl) {
+    fetch(DATA.webhookUrl, {
+      method:'POST',
+      mode:'no-cors',
+      body: JSON.stringify(state.leadData),
+    }).catch(()=>{});
+  }
+  show('loading');
+  runLoader();
+}
+
+function runLoader() {
+  const wrap = document.getElementById('loadingSteps');
+  wrap.innerHTML = DATA.loadingSteps.map((s,i) =>
+    `<div class="loading-step" id="ls${i}"><div class="ls-icon">○</div><span>${s}</span></div>`
+  ).join('');
+  let i = 0;
+  const iv = setInterval(() => {
+    const el = document.getElementById(`ls${i}`);
+    if(el){ el.classList.add('vis','done'); el.querySelector('.ls-icon').textContent = '✓'; }
+    i++;
+    if(i >= DATA.loadingSteps.length) {
+      clearInterval(iv);
+      setTimeout(() => {
+        document.getElementById('loadingFinal').classList.add('vis');
+        setTimeout(() => { buildResult(); show('result'); }, 1200);
+      }, 400);
+    }
+  }, 720);
+}
+
+/* ═══════════════════════════════════════════════════
+   RESULT
+═══════════════════════════════════════════════════ */
+function buildResult() {
+  const key = DATA.resultMap[state.answers.q1] || 'RESULT_A_skin';
+  const r = DATA.results[key];
+  document.getElementById('resultTitle').textContent = r.title;
+  document.getElementById('resultShort').textContent = r.short;
+  document.getElementById('resultDeep').innerHTML = (r.deep||'')
+    .replace(/\n\n/g,'<br><br>')
+    .replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+
+  // Персоналізований заголовок
+  const greet = document.getElementById('resultGreeting');
+  if(greet) greet.textContent = state.leadData.name
+    ? `${state.leadData.name}, дякуємо! Заявку прийнято.`
+    : 'Дякуємо! Вашу заявку прийнято.';
+
+  // CTA-посилання
+  const direct = document.getElementById('ctaDirect');
+  const call   = document.getElementById('ctaCall');
+  if(direct) direct.href = DATA.contact.instagram;
+  if(call)   call.href   = 'tel:' + DATA.contact.phone;
+}
+
+function toggleExpand() {
+  const d = document.getElementById('resultDeep');
+  const b = document.getElementById('expandBtn');
+  const open = d.style.display === 'block';
+  d.style.display = open ? 'none' : 'block';
+  b.textContent = open ? 'Читати більше ↓' : 'Сховати ↑';
+}
+
+/* FAQ */
+function faqToggle(i) {
+  document.getElementById(`faq${i}`).classList.toggle('open');
+}
+</script>
+</body>
+</html>
