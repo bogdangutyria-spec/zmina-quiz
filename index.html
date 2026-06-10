@@ -1693,12 +1693,54 @@ function pick(qid, optId, btn) {
 /* ═══════════════════════════════════════════════════
    LEAD
 ═══════════════════════════════════════════════════ */
+// Повний україномовний підпис вибраної відповіді (резолвить id → текст)
+function answerLabel(qid) {
+  const id = state.answers[qid];
+  if(!id) return '';
+  let opts;
+  if(qid === 'q2' || qid === 'q3') {
+    const b = DATA.questions[qid][state.answers.q1];
+    opts = b ? b.opts : [];
+  } else {
+    opts = DATA.questions[qid] || [];
+  }
+  const o = opts.find(o => o.id === id);
+  return o ? o.label : id;
+}
+// Заголовок гілкованого питання (для контексту в транскрипті)
+function questionTitle(qid) {
+  if(qid === 'q2' || qid === 'q3') {
+    const b = DATA.questions[qid][state.answers.q1];
+    return b ? b.title : '';
+  }
+  return '';
+}
+
 function submitLead() {
   const phone = document.getElementById('field-phone').value.trim();
   if(!phone) { document.getElementById('field-phone').focus(); return; }
+
+  // Повний транскрипт «питання — відповідь» для таблиці
+  const summary = [
+    'Напрям: ' + answerLabel('q1'),
+    questionTitle('q2') + ' — ' + answerLabel('q2'),
+    questionTitle('q3') + ' — ' + answerLabel('q3'),
+    'Як швидко хоче результат: ' + answerLabel('q5'),
+    'Коли планує візит: ' + answerLabel('q7'),
+    'Вік: ' + answerLabel('q8'),
+  ].join('\n');
+
   state.leadData = {
     name:  document.getElementById('field-name').value.trim(),
-    phone, answers: {...state.answers}
+    phone,
+    q1: answerLabel('q1'),
+    q2: answerLabel('q2'),
+    q3: answerLabel('q3'),
+    q5: answerLabel('q5'),
+    q7: answerLabel('q7'),
+    q8: answerLabel('q8'),
+    summary,
+    answers: {...state.answers}
   };
   if(window.fbq) fbq('track', 'Lead', {
     content_name: 'zmina_quiz_lead',
