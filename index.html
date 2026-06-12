@@ -349,6 +349,23 @@ body{
   color:var(--text);
   opacity:0.75;
 }
+
+/* Бейдж ліцензії МОЗ — помітний trust-сигнал угорі */
+.w-license{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;margin-bottom:18px;
+  background:var(--surface);
+  border:1px solid var(--border-focus);
+  border-left:3px solid var(--accent-dk);
+  border-radius:var(--r-md);
+  text-decoration:none;color:var(--text);
+  transition:box-shadow var(--transition),transform var(--transition);
+}
+.w-license:hover{box-shadow:var(--shadow-sm);transform:translateY(-1px);}
+.w-license-ico{font-size:22px;line-height:1;flex-shrink:0;}
+.w-license-txt{flex:1;font-size:12px;line-height:1.4;color:var(--text-2);}
+.w-license-txt b{display:block;color:var(--text);font-weight:600;font-size:13px;}
+.w-license-link{font-size:11px;font-weight:600;color:var(--accent-dk);white-space:nowrap;flex-shrink:0;}
 .btn-start{
   display:flex;
   align-items:center;justify-content:center;gap:10px;
@@ -1048,12 +1065,17 @@ body{
     <!-- ══ WELCOME ══ -->
     <div class="screen active" id="screen-welcome">
       <img class="w-hero-mobile" src="assets/B-mask.png" alt="ZMINA Beauty">
+      <a class="w-license" href="assets/license-moz.png" target="_blank" rel="noopener">
+        <span class="w-license-ico">🛡️</span>
+        <span class="w-license-txt"><b>Працюємо за ліцензією МОЗ</b>Спеціальність «дерматовенерологія» · наказ №569</span>
+        <span class="w-license-link">Переглянути →</span>
+      </a>
       <div class="w-eyebrow">Безкоштовна консультація лікаря-косметолога</div>
       <h1 class="w-headline">Заповніть форму для запису<br>на консультацію</h1>
-      <p class="w-subhead">Дайте відповідь на кілька питань про свій запит — і менеджер запише вас на безкоштовну консультацію, де лікар підбере рішення саме для вас.</p>
+      <p class="w-subhead">Дайте відповідь на кілька питань про свій запит — і менеджер запише вас на безкоштовну консультацію з лікарем-косметологом, де ви зможете підібрати ідеальну процедуру та рішення під ваш запит: овал, пігментація, ін'єкції чи догляд.</p>
       <div class="w-counter">
         <span class="w-counter-pulse"></span>
-        <span><b>127 жінок</b> записались на консультацію цього місяця</span>
+        <span><b>127 жінок</b> відвідали консультацію минулого місяця</span>
       </div>
       <div class="w-bullets">
         <div class="w-bullet"><div class="w-bullet-dot"></div>Консультація лікаря — безкоштовна</div>
